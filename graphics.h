@@ -9,7 +9,7 @@
 #include "fleetview.h"
 #include "planetview.h"
 #include "Map.h"
-
+// test
 class CGraphics : public QGraphicsView
 {
     Q_OBJECT
