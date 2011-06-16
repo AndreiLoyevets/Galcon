@@ -1,27 +1,48 @@
+// created by Andrei Loyevets
+
 #ifndef PLANETVIEW_H
 #define PLANETVIEW_H
 
 #include <QPoint>
 #include <QtGui/QGraphicsItem>
+#include <QBrush>
 #include <QPen>
+#include <QRadialGradient>
 #include <QPainter>
+#include "Planet.h"
+#include "sources.h"
+#include "graphics.h"
 
 class CPlanetView : public QGraphicsItem
 {
     //Q_OBJECT
 public:
-    CPlanetView(QPointF i_pos, unsigned int i_r=50, unsigned int i_id=1);
+    CPlanetView(int i_id, CGraphics * i_pGraphics)
+    {
+        m_id=i_id;
+        m_pParent=i_pGraphics;
+        selected=false;
+    }
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                        QWidget *widget);
-    QPointF GetPosition() const
+    int GetId()
     {
-        return m_pos;
+        return m_id;
     }
+    void Mark()
+    {
+        selected=true;
+    }
+    void Unmark()
+    {
+        selected=false;
+    }
+
 private:
-    QPointF m_pos;
-    unsigned int m_radius;
-    unsigned int m_id;
+    bool selected;
+    int m_id;
+    CGraphics * m_pParent;
 };
 
 #endif // PLANETVIEW_H

@@ -1,30 +1,59 @@
+// created by Andrei Loyevets
+
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include <QWidget>
+#include <QTableWidget>
+#include <QLabel>
 #include <QVector>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsView>
+#include <QPainter>
+#include <QSet>
+#include <QMouseEvent>
+#include "sources.h"
 #include "fleetview.h"
 #include "planetview.h"
+#include "Map.h"
+using namespace MessageDecl;
 
-class CGraphics : public QWidget
+class CGraphics : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit CGraphics(unsigned int id,QWidget *parent = 0);
+    explicit CGraphics(CMap * i_pModel,QGraphicsView *parent = 0);
+    CMap * GetModelPtr()
+    {
+        return pModel;
+    }
+    void GetCompress (double & kx, double & ky)
+    {
+        kx=compressX;
+        ky=compressY;
+    }
+    void Redraw();
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 private:
-    // pModel
-    unsigned int m_playerId;
-    QGraphicsView m_view;
+    CMap * pModel;
+    double compressX;
+    double compressY;
+    int m_playerId;
+    QGraphicsRectItem * rect;
+    QTableWidget * m_statisticsPanel;
+    QLabel * pPercent;
     QGraphicsScene m_scene;
-    QVector<unsigned int> m_originPlanets;
-    unsigned int m_percentage;
-    unsigned int m_destPlanetId;
+    QSet<int> m_originPlanets;
+    QVector<CPlanetView*> m_pPlanets;
+    QMap<int,CFleetView*> m_pFleets;
+    int m_percentage;
+    int m_destPlanetId;
 
 
 signals:
-
+    void SendFleet(CMessage * pMessage);
 public slots:
 
 };
